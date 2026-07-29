@@ -15,39 +15,36 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
 #controls{flex:1 1 0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#1a2744;padding:10px 12px 20px;display:flex;flex-direction:column;gap:8px}
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
 .row{display:flex;gap:6px;align-items:stretch}
-.btn{padding:10px 8px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn{padding:10px 8px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .btn-primary{background:#c8ab5a;color:#1a2744}
 .btn-secondary{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15)}
 .btn-danger{background:rgba(220,60,60,0.15);color:#f08080;border:1px solid rgba(220,60,60,0.25)}
-.dd-wrap{flex:1;position:relative}
-.dd-btn{width:100%;height:100%;min-height:42px;padding:10px 12px;font-size:14px;font-weight:600;background:rgba(255,255,255,0.08);color:#fff;border:1.5px solid rgba(255,255,255,0.2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.dd-btn span.chevron{font-size:10px;color:rgba(255,255,255,0.4);transition:transform .2s;flex-shrink:0}
-.dd-btn.open span.chevron{transform:rotate(180deg)}
-.dd-menu{position:absolute;top:calc(100% + 4px);right:0;left:0;background:#1e3060;border:1.5px solid rgba(200,171,90,0.5);border-radius:10px;max-height:200px;overflow-y:auto;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.5);display:none}
+.dd-wrap{flex:1;position:relative;z-index:10}
+.dd-btn{width:100%;height:100%;min-height:42px;padding:8px 12px;font-size:14px;font-weight:600;background:rgba(255,255,255,0.08);color:#fff;border:1.5px solid rgba(255,255,255,0.2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:4px;text-align:right}
+.dd-btn .chevron{font-size:10px;color:rgba(255,255,255,0.5);flex-shrink:0;transition:transform .2s}
+.dd-btn.open .chevron{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:calc(100% + 4px);right:0;left:0;background:#1a2f5e;border:1.5px solid #c8ab5a;border-radius:10px;max-height:180px;overflow-y:auto;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.6);display:none;-webkit-overflow-scrolling:touch}
 .dd-menu.open{display:block}
-.dd-item{padding:10px 14px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.06);text-align:right}
+.dd-item{padding:11px 14px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);text-align:right;-webkit-tap-highlight-color:rgba(200,171,90,0.3)}
 .dd-item:last-child{border-bottom:none}
-.dd-item:active{background:rgba(200,171,90,0.25);color:#c8ab5a}
+.dd-item:active,.dd-item:hover{background:rgba(200,171,90,0.2);color:#c8ab5a}
 #status{font-size:12px;color:rgba(255,255,255,0.5);min-height:16px}
 #status.found{color:#7ed9a0}
 #status.notfound{color:#f08080}
-#route-status{font-size:12px;color:#f08080;min-height:16px}
-.route-info{background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);border-radius:8px;padding:8px 12px;font-size:13px;display:none;align-items:center;gap:6px}
+#route-status{font-size:12px;color:#f08080;min-height:14px}
+.route-info{background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);border-radius:8px;padding:8px 12px;font-size:13px;align-items:center;gap:6px;display:none}
 .route-info .from{color:#7ed9a0;font-weight:700}
 .route-info .to{color:#f0a070;font-weight:700}
-.route-info .arrow{color:rgba(255,255,255,0.4)}
-.pin{position:absolute;transform:translate(-50%,-100%);animation:bounce .35s ease}
-@keyframes bounce{0%{transform:translate(-50%,-130%) scale(.3);opacity:0}65%{transform:translate(-50%,-90%) scale(1.15);opacity:1}100%{transform:translate(-50%,-100%) scale(1);opacity:1}}
-.pulse{animation:bounce .35s ease,pulse 2s ease-in-out .35s infinite}
-@keyframes pulse{0%,100%{transform:translate(-50%,-100%) scale(1)}50%{transform:translate(-50%,-100%) scale(1.12)}}
-.pin-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,.4);background:transparent}
-.pin-dot.red{color:#e03535;background:rgba(224,53,53,0.15)}
-.pin-dot.green{color:#27ae60;background:rgba(39,174,96,0.15)}
-.pin-dot.orange{color:#e07b35;background:rgba(224,123,53,0.15)}
+.pin{position:absolute;transform:translate(-50%,-100%);animation:bnc .35s ease}
+@keyframes bnc{0%{transform:translate(-50%,-130%) scale(.3);opacity:0}65%{transform:translate(-50%,-90%) scale(1.15);opacity:1}100%{transform:translate(-50%,-100%) scale(1);opacity:1}}
+.pulse{animation:bnc .35s ease,pls 2s ease-in-out .35s infinite}
+@keyframes pls{0%,100%{transform:translate(-50%,-100%) scale(1)}50%{transform:translate(-50%,-100%) scale(1.12)}}
+.pin-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;background:transparent}
+.pin-dot.red{color:#e03535;background:rgba(224,53,53,0.18)}
+.pin-dot.grn{color:#27ae60;background:rgba(39,174,96,0.18)}
+.pin-dot.org{color:#e07b35;background:rgba(224,123,53,0.18)}
 .pin-tail{width:2px;height:8px;margin:0 auto}
-.pin-tail.red{background:#e03535}
-.pin-tail.green{background:#27ae60}
-.pin-tail.orange{background:#e07b35}
+.pin-tail.red{background:#e03535}.pin-tail.grn{background:#27ae60}.pin-tail.org{background:#e07b35}
 </style>
 </head>
 <body>
@@ -59,38 +56,36 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
   </div>
   <div id="controls">
 
-    <!-- Search -->
     <div class="card">
       <div class="row">
-        <div class="dd-wrap">
-          <button class="dd-btn" id="dd-search-btn">
-            <span id="dd-search-label">اختر رقم المبنى</span>
+        <div class="dd-wrap" id="wrap-search">
+          <button class="dd-btn" id="btn-dd-search">
+            <span id="lbl-search">اختر رقم المبنى</span>
             <span class="chevron">▼</span>
           </button>
-          <div class="dd-menu" id="dd-search-menu"></div>
+          <div class="dd-menu" id="menu-search"></div>
         </div>
-        <button class="btn btn-primary" id="btn-search">بحث</button>
-        <button class="btn btn-secondary" id="btn-clear-search">مسح</button>
+        <button class="btn btn-primary" id="btn-do-search">بحث</button>
+        <button class="btn btn-secondary" id="btn-do-clear">مسح</button>
       </div>
       <div id="status"></div>
     </div>
 
-    <!-- Route -->
     <div class="card">
       <div class="row">
-        <div class="dd-wrap">
-          <button class="dd-btn" id="dd-from-btn">
-            <span id="dd-from-label">🟢 من</span>
+        <div class="dd-wrap" id="wrap-from">
+          <button class="dd-btn" id="btn-dd-from">
+            <span id="lbl-from">🟢 من</span>
             <span class="chevron">▼</span>
           </button>
-          <div class="dd-menu" id="dd-from-menu"></div>
+          <div class="dd-menu" id="menu-from"></div>
         </div>
-        <div class="dd-wrap">
-          <button class="dd-btn" id="dd-to-btn">
-            <span id="dd-to-label">🟠 إلى</span>
+        <div class="dd-wrap" id="wrap-to">
+          <button class="dd-btn" id="btn-dd-to">
+            <span id="lbl-to">🟠 إلى</span>
             <span class="chevron">▼</span>
           </button>
-          <div class="dd-menu" id="dd-to-menu"></div>
+          <div class="dd-menu" id="menu-to"></div>
         </div>
         <button class="btn btn-primary" id="btn-draw">رسم</button>
         <button class="btn btn-danger" id="btn-clear-route" style="display:none">مسح</button>
@@ -98,278 +93,250 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
       <div id="route-status"></div>
       <div class="route-info" id="route-info">
         <span class="from" id="ri-from"></span>
-        <span class="arrow">──▶</span>
+        <span style="color:rgba(255,255,255,0.4)">──▶</span>
         <span class="to" id="ri-to"></span>
       </div>
     </div>
 
   </div>
 </div>
-
 <script>
-const buildings = [
-  {n:1,x:3.67,y:17.12},{n:2,x:8.83,y:18.66},{n:3,x:6.17,y:17.12},{n:4,x:5.47,y:18.77},
-  {n:5,x:7.03,y:20.09},{n:6,x:6.48,y:22.72},{n:7,x:4.61,y:22.61},
-  {n:8,x:3.75,y:27.55},{n:9,x:3.75,y:31.17},{n:10,x:5.78,y:37.21},{n:11,x:9.69,y:40.18},
-  {n:12,x:10.0,y:36.44},{n:13,x:12.11,y:34.03},{n:14,x:15.16,y:31.83},
-  {n:15,x:15.55,y:36.66},{n:16,x:15.23,y:40.5},{n:17,x:13.12,y:42.81},
-  {n:18,x:16.88,y:46.32},{n:19,x:17.73,y:42.81},{n:20,x:19.92,y:40.07},
-  {n:21,x:22.34,y:41.05},{n:22,x:23.59,y:44.57},{n:23,x:22.34,y:48.19},
-  {n:24,x:20.08,y:50.05},{n:25,x:29.22,y:36.0},{n:26,x:27.03,y:38.42},
-  {n:27,x:24.53,y:36.88},{n:28,x:23.44,y:33.48},{n:29,x:24.92,y:30.3},
-  {n:30,x:23.05,y:26.56},{n:31,x:20.39,y:28.1},{n:32,x:18.28,y:25.69},
-  {n:33,x:17.89,y:21.95},{n:34,x:26.25,y:22.72},
-  {n:35,x:5.7,y:45.55},{n:36,x:6.72,y:48.96},{n:37,x:5.78,y:52.58},
-  {n:38,x:5.7,y:58.4},{n:39,x:5.78,y:63.89},
-  {n:40,x:6.64,y:69.97},{n:41,x:6.48,y:74.2},{n:42,x:7.5,y:70.58},
-  {n:43,x:9.53,y:66.63},{n:44,x:8.2,y:69.42},{n:45,x:12.42,y:74.2},
-  {n:46,x:7.66,y:76.29},{n:47,x:14.92,y:78.38},
-  {n:48,x:17.27,y:74.42},{n:49,x:17.89,y:77.39},{n:50,x:19.14,y:78.7},
-  {n:51,x:18.67,y:76.84},{n:52,x:20.47,y:72.67},{n:53,x:22.34,y:69.92},
-  {n:54,x:20.08,y:70.36},{n:55,x:22.11,y:63.23},{n:56,x:21.33,y:66.52},
-  {n:57,x:18.2,y:67.73},{n:58,x:14.77,y:68.06},{n:59,x:15.78,y:63.56},
-  {n:60,x:17.03,y:60.04},{n:61,x:19.61,y:58.95},{n:62,x:15.7,y:53.68},
-  {n:63,x:12.19,y:56.31},{n:64,x:16.17,y:57.85},
-  {n:65,x:9.38,y:60.81},{n:66,x:10.94,y:50.93},{n:67,x:10.23,y:52.25},
-  {n:68,x:15.94,y:48.19},
-  {n:69,x:23.83,y:55.32},{n:70,x:25.16,y:52.14},{n:71,x:27.66,y:50.05},
-  {n:72,x:30.08,y:51.92},{n:73,x:30.86,y:55.65},{n:74,x:28.83,y:58.73},
-  {n:75,x:26.41,y:59.93},{n:76,x:28.83,y:65.2},{n:77,x:30.47,y:62.46},
-  {n:78,x:33.44,y:61.25},{n:79,x:35.39,y:63.67},{n:80,x:35.62,y:67.51},
-  {n:81,x:33.2,y:70.03},{n:82,x:30.63,y:70.47},{n:83,x:31.48,y:75.74},
-  {n:84,x:34.69,y:74.09},
-  {n:85,x:35.62,y:77.61},{n:86,x:37.89,y:77.72},{n:87,x:38.75,y:74.2},
-  {n:88,x:41.33,y:74.2},{n:89,x:42.27,y:77.61},{n:90,x:40.47,y:83.75},
-  {n:91,x:45.39,y:74.31},{n:92,x:45.94,y:68.5},{n:93,x:43.52,y:69.92},
-  {n:94,x:42.19,y:73.0},{n:95,x:40.94,y:63.78},{n:96,x:43.52,y:62.46},
-  {n:97,x:45.94,y:63.78},{n:98,x:45.94,y:57.41},{n:99,x:43.52,y:58.73},
-  {n:100,x:41.02,y:57.3},
-  {n:101,x:45.94,y:52.58},{n:102,x:43.52,y:51.15},{n:103,x:41.02,y:52.58},
-  {n:104,x:46.02,y:43.91},{n:105,x:43.75,y:47.31},{n:106,x:42.19,y:43.25},
-  {n:107,x:38.91,y:42.04},{n:108,x:38.91,y:45.77},{n:109,x:36.56,y:49.07},
-  {n:110,x:33.67,y:47.53},{n:111,x:33.2,y:42.92},{n:112,x:35.0,y:40.18},
-  {n:113,x:36.72,y:33.48},{n:114,x:38.75,y:30.63},
-  {n:115,x:41.72,y:27.44},{n:116,x:44.3,y:28.87},{n:117,x:46.72,y:30.19},
-  {n:118,x:50.08,y:30.19},{n:119,x:52.5,y:28.87},{n:120,x:55.0,y:27.55},
-  {n:121,x:57.97,y:30.52},{n:122,x:60.08,y:33.48},{n:123,x:56.56,y:35.46},
-  {n:124,x:53.83,y:36.66},{n:125,x:50.08,y:37.43},{n:126,x:46.64,y:37.32},
-  {n:127,x:42.97,y:36.66},{n:128,x:40.16,y:35.46},
-  {n:129,x:50.78,y:43.91},{n:130,x:53.05,y:47.31},{n:131,x:54.3,y:43.25},
-  {n:132,x:50.78,y:52.58},{n:133,x:53.2,y:51.26},{n:134,x:55.7,y:52.58},
-  {n:135,x:55.78,y:57.3},{n:136,x:53.2,y:58.73},{n:137,x:50.7,y:57.3},
-  {n:138,x:50.7,y:63.78},{n:139,x:53.2,y:62.35},{n:140,x:55.78,y:63.78},
-  {n:141,x:55.7,y:68.5},{n:142,x:53.2,y:69.92},{n:143,x:50.78,y:68.5},
-  {n:144,x:51.25,y:74.2},{n:145,x:52.11,y:77.72},{n:146,x:54.45,y:77.72},
-  {n:147,x:55.31,y:74.2},{n:148,x:57.81,y:74.2},{n:149,x:58.83,y:77.72},
-  {n:150,x:61.17,y:77.72},{n:151,x:62.03,y:74.2},{n:152,x:65.23,y:75.74},
-  {n:153,x:66.09,y:70.47},{n:154,x:63.52,y:70.36},{n:155,x:64.06,y:71.13},
-  {n:156,x:61.33,y:63.67},{n:157,x:63.36,y:61.14},
-  {n:158,x:66.17,y:62.46},{n:159,x:67.97,y:65.64},{n:160,x:70.47,y:59.82},
-  {n:161,x:67.81,y:58.62},{n:162,x:65.78,y:55.76},{n:163,x:66.56,y:52.03},
-  {n:164,x:68.91,y:50.16},{n:165,x:71.72,y:52.03},{n:166,x:73.05,y:55.21},
-  {n:167,x:57.89,y:42.04},{n:168,x:57.89,y:45.77},{n:169,x:60.16,y:49.07},
-  {n:170,x:63.12,y:47.53},{n:171,x:63.44,y:42.92},{n:172,x:61.72,y:40.07},
-  {n:173,x:67.5,y:36.0},{n:174,x:69.77,y:38.42},{n:175,x:72.27,y:36.88},
-  {n:176,x:73.28,y:33.48},{n:177,x:90.16,y:58.07},
-  {n:178,x:73.75,y:26.67},{n:179,x:76.25,y:27.99},{n:180,x:78.44,y:25.69},
-  {n:181,x:78.75,y:21.95},{n:182,x:76.72,y:19.43},
-  {n:183,x:86.41,y:40.72},{n:184,x:86.17,y:36.99},{n:185,x:84.06,y:34.36},
-  {n:186,x:81.25,y:32.16},{n:187,x:80.94,y:36.88},{n:188,x:81.33,y:40.72},
-  {n:189,x:83.44,y:42.92},{n:190,x:79.84,y:46.32},{n:191,x:79.06,y:42.81},
-  {n:192,x:76.8,y:39.96},{n:193,x:74.3,y:41.05},{n:194,x:72.89,y:44.57},
-  {n:195,x:74.38,y:48.3},{n:196,x:76.64,y:50.05},{n:197,x:88.28,y:46.98},
-  {n:198,x:90.23,y:49.4},{n:199,x:90.55,y:53.24},
-  {n:200,x:84.14,y:50.27},{n:201,x:86.33,y:52.36},{n:202,x:87.11,y:55.98},
-  {n:203,x:87.34,y:60.81},{n:204,x:83.98,y:59.28},{n:205,x:81.72,y:57.3},
-  {n:206,x:80.78,y:53.79},{n:207,x:77.03,y:58.95},{n:208,x:79.53,y:60.15},
-  {n:209,x:80.16,y:65.53},{n:210,x:81.88,y:68.06},{n:211,x:78.36,y:67.73},
-  {n:212,x:75.86,y:66.52},{n:213,x:74.61,y:63.34},{n:214,x:71.72,y:69.7},
-  {n:215,x:74.38,y:70.25},{n:216,x:76.25,y:72.78},{n:217,x:77.89,y:76.84},
-  {n:218,x:74.53,y:77.72},{n:219,x:71.8,y:77.39},{n:220,x:70.08,y:74.64},
-  {n:221,x:80.94,y:78.27},{n:222,x:84.84,y:77.72},{n:223,x:83.83,y:74.31},
-  {n:224,x:81.88,y:70.8},{n:225,x:86.64,y:66.63},{n:226,x:88.44,y:70.14},
-  {n:227,x:89.3,y:74.09},{n:228,x:87.97,y:77.61},
-];
+(function(){
+  var buildings=[
+    {n:1,x:3.67,y:17.12},{n:2,x:8.83,y:18.66},{n:3,x:6.17,y:17.12},{n:4,x:5.47,y:18.77},
+    {n:5,x:7.03,y:20.09},{n:6,x:6.48,y:22.72},{n:7,x:4.61,y:22.61},
+    {n:8,x:3.75,y:27.55},{n:9,x:3.75,y:31.17},{n:10,x:5.78,y:37.21},{n:11,x:9.69,y:40.18},
+    {n:12,x:10.0,y:36.44},{n:13,x:12.11,y:34.03},{n:14,x:15.16,y:31.83},
+    {n:15,x:15.55,y:36.66},{n:16,x:15.23,y:40.5},{n:17,x:13.12,y:42.81},
+    {n:18,x:16.88,y:46.32},{n:19,x:17.73,y:42.81},{n:20,x:19.92,y:40.07},
+    {n:21,x:22.34,y:41.05},{n:22,x:23.59,y:44.57},{n:23,x:22.34,y:48.19},
+    {n:24,x:20.08,y:50.05},{n:25,x:29.22,y:36.0},{n:26,x:27.03,y:38.42},
+    {n:27,x:24.53,y:36.88},{n:28,x:23.44,y:33.48},{n:29,x:24.92,y:30.3},
+    {n:30,x:23.05,y:26.56},{n:31,x:20.39,y:28.1},{n:32,x:18.28,y:25.69},
+    {n:33,x:17.89,y:21.95},{n:34,x:26.25,y:22.72},
+    {n:35,x:5.7,y:45.55},{n:36,x:6.72,y:48.96},{n:37,x:5.78,y:52.58},
+    {n:38,x:5.7,y:58.4},{n:39,x:5.78,y:63.89},
+    {n:40,x:6.64,y:69.97},{n:41,x:6.48,y:74.2},{n:42,x:7.5,y:70.58},
+    {n:43,x:9.53,y:66.63},{n:44,x:8.2,y:69.42},{n:45,x:12.42,y:74.2},
+    {n:46,x:7.66,y:76.29},{n:47,x:14.92,y:78.38},
+    {n:48,x:17.27,y:74.42},{n:49,x:17.89,y:77.39},{n:50,x:19.14,y:78.7},
+    {n:51,x:18.67,y:76.84},{n:52,x:20.47,y:72.67},{n:53,x:22.34,y:69.92},
+    {n:54,x:20.08,y:70.36},{n:55,x:22.11,y:63.23},{n:56,x:21.33,y:66.52},
+    {n:57,x:18.2,y:67.73},{n:58,x:14.77,y:68.06},{n:59,x:15.78,y:63.56},
+    {n:60,x:17.03,y:60.04},{n:61,x:19.61,y:58.95},{n:62,x:15.7,y:53.68},
+    {n:63,x:12.19,y:56.31},{n:64,x:16.17,y:57.85},
+    {n:65,x:9.38,y:60.81},{n:66,x:10.94,y:50.93},{n:67,x:10.23,y:52.25},
+    {n:68,x:15.94,y:48.19},
+    {n:69,x:23.83,y:55.32},{n:70,x:25.16,y:52.14},{n:71,x:27.66,y:50.05},
+    {n:72,x:30.08,y:51.92},{n:73,x:30.86,y:55.65},{n:74,x:28.83,y:58.73},
+    {n:75,x:26.41,y:59.93},{n:76,x:28.83,y:65.2},{n:77,x:30.47,y:62.46},
+    {n:78,x:33.44,y:61.25},{n:79,x:35.39,y:63.67},{n:80,x:35.62,y:67.51},
+    {n:81,x:33.2,y:70.03},{n:82,x:30.63,y:70.47},{n:83,x:31.48,y:75.74},
+    {n:84,x:34.69,y:74.09},
+    {n:85,x:35.62,y:77.61},{n:86,x:37.89,y:77.72},{n:87,x:38.75,y:74.2},
+    {n:88,x:41.33,y:74.2},{n:89,x:42.27,y:77.61},{n:90,x:40.47,y:83.75},
+    {n:91,x:45.39,y:74.31},{n:92,x:45.94,y:68.5},{n:93,x:43.52,y:69.92},
+    {n:94,x:42.19,y:73.0},{n:95,x:40.94,y:63.78},{n:96,x:43.52,y:62.46},
+    {n:97,x:45.94,y:63.78},{n:98,x:45.94,y:57.41},{n:99,x:43.52,y:58.73},
+    {n:100,x:41.02,y:57.3},
+    {n:101,x:45.94,y:52.58},{n:102,x:43.52,y:51.15},{n:103,x:41.02,y:52.58},
+    {n:104,x:46.02,y:43.91},{n:105,x:43.75,y:47.31},{n:106,x:42.19,y:43.25},
+    {n:107,x:38.91,y:42.04},{n:108,x:38.91,y:45.77},{n:109,x:36.56,y:49.07},
+    {n:110,x:33.67,y:47.53},{n:111,x:33.2,y:42.92},{n:112,x:35.0,y:40.18},
+    {n:113,x:36.72,y:33.48},{n:114,x:38.75,y:30.63},
+    {n:115,x:41.72,y:27.44},{n:116,x:44.3,y:28.87},{n:117,x:46.72,y:30.19},
+    {n:118,x:50.08,y:30.19},{n:119,x:52.5,y:28.87},{n:120,x:55.0,y:27.55},
+    {n:121,x:57.97,y:30.52},{n:122,x:60.08,y:33.48},{n:123,x:56.56,y:35.46},
+    {n:124,x:53.83,y:36.66},{n:125,x:50.08,y:37.43},{n:126,x:46.64,y:37.32},
+    {n:127,x:42.97,y:36.66},{n:128,x:40.16,y:35.46},
+    {n:129,x:50.78,y:43.91},{n:130,x:53.05,y:47.31},{n:131,x:54.3,y:43.25},
+    {n:132,x:50.78,y:52.58},{n:133,x:53.2,y:51.26},{n:134,x:55.7,y:52.58},
+    {n:135,x:55.78,y:57.3},{n:136,x:53.2,y:58.73},{n:137,x:50.7,y:57.3},
+    {n:138,x:50.7,y:63.78},{n:139,x:53.2,y:62.35},{n:140,x:55.78,y:63.78},
+    {n:141,x:55.7,y:68.5},{n:142,x:53.2,y:69.92},{n:143,x:50.78,y:68.5},
+    {n:144,x:51.25,y:74.2},{n:145,x:52.11,y:77.72},{n:146,x:54.45,y:77.72},
+    {n:147,x:55.31,y:74.2},{n:148,x:57.81,y:74.2},{n:149,x:58.83,y:77.72},
+    {n:150,x:61.17,y:77.72},{n:151,x:62.03,y:74.2},{n:152,x:65.23,y:75.74},
+    {n:153,x:66.09,y:70.47},{n:154,x:63.52,y:70.36},{n:155,x:64.06,y:71.13},
+    {n:156,x:61.33,y:63.67},{n:157,x:63.36,y:61.14},
+    {n:158,x:66.17,y:62.46},{n:159,x:67.97,y:65.64},{n:160,x:70.47,y:59.82},
+    {n:161,x:67.81,y:58.62},{n:162,x:65.78,y:55.76},{n:163,x:66.56,y:52.03},
+    {n:164,x:68.91,y:50.16},{n:165,x:71.72,y:52.03},{n:166,x:73.05,y:55.21},
+    {n:167,x:57.89,y:42.04},{n:168,x:57.89,y:45.77},{n:169,x:60.16,y:49.07},
+    {n:170,x:63.12,y:47.53},{n:171,x:63.44,y:42.92},{n:172,x:61.72,y:40.07},
+    {n:173,x:67.5,y:36.0},{n:174,x:69.77,y:38.42},{n:175,x:72.27,y:36.88},
+    {n:176,x:73.28,y:33.48},{n:177,x:90.16,y:58.07},
+    {n:178,x:73.75,y:26.67},{n:179,x:76.25,y:27.99},{n:180,x:78.44,y:25.69},
+    {n:181,x:78.75,y:21.95},{n:182,x:76.72,y:19.43},
+    {n:183,x:86.41,y:40.72},{n:184,x:86.17,y:36.99},{n:185,x:84.06,y:34.36},
+    {n:186,x:81.25,y:32.16},{n:187,x:80.94,y:36.88},{n:188,x:81.33,y:40.72},
+    {n:189,x:83.44,y:42.92},{n:190,x:79.84,y:46.32},{n:191,x:79.06,y:42.81},
+    {n:192,x:76.8,y:39.96},{n:193,x:74.3,y:41.05},{n:194,x:72.89,y:44.57},
+    {n:195,x:74.38,y:48.3},{n:196,x:76.64,y:50.05},{n:197,x:88.28,y:46.98},
+    {n:198,x:90.23,y:49.4},{n:199,x:90.55,y:53.24},
+    {n:200,x:84.14,y:50.27},{n:201,x:86.33,y:52.36},{n:202,x:87.11,y:55.98},
+    {n:203,x:87.34,y:60.81},{n:204,x:83.98,y:59.28},{n:205,x:81.72,y:57.3},
+    {n:206,x:80.78,y:53.79},{n:207,x:77.03,y:58.95},{n:208,x:79.53,y:60.15},
+    {n:209,x:80.16,y:65.53},{n:210,x:81.88,y:68.06},{n:211,x:78.36,y:67.73},
+    {n:212,x:75.86,y:66.52},{n:213,x:74.61,y:63.34},{n:214,x:71.72,y:69.7},
+    {n:215,x:74.38,y:70.25},{n:216,x:76.25,y:72.78},{n:217,x:77.89,y:76.84},
+    {n:218,x:74.53,y:77.72},{n:219,x:71.8,y:77.39},{n:220,x:70.08,y:74.64},
+    {n:221,x:80.94,y:78.27},{n:222,x:84.84,y:77.72},{n:223,x:83.83,y:74.31},
+    {n:224,x:81.88,y:70.8},{n:225,x:86.64,y:66.63},{n:226,x:88.44,y:70.14},
+    {n:227,x:89.3,y:74.09},{n:228,x:87.97,y:77.61}
+  ];
 
-// State
-var searchSel = null;
-var fromSel   = null;
-var toSel     = null;
-var routeFrom = null;
-var routeTo   = null;
+  // State
+  var searchSel=null, fromSel=null, toSel=null, routeFrom=null, routeTo=null;
 
-// ── Helpers ──────────────────────────────────────────────
-function getRect() {
-  var wrap = document.getElementById('map-wrap');
-  var img  = document.getElementById('map-img');
-  var wW = wrap.clientWidth, wH = wrap.clientHeight;
-  var nW = img.naturalWidth  || 1280;
-  var nH = img.naturalHeight || 911;
-  var scale = Math.min(wW/nW, wH/nH);
-  var rW = nW*scale, rH = nH*scale;
-  return { oX:(wW-rW)/2, oY:(wH-rH)/2, rW:rW, rH:rH };
-}
-
-function toPixel(b) {
-  var r = getRect();
-  return { x: r.oX + b.x/100*r.rW, y: r.oY + b.y/100*r.rH };
-}
-
-function setStatus(msg, cls) {
-  var el = document.getElementById('status');
-  el.textContent = msg;
-  el.className = cls || '';
-}
-
-// ── Dropdown helper ───────────────────────────────────────
-function closeAll() {
-  document.querySelectorAll('.dd-menu').forEach(function(m) { m.classList.remove('open'); });
-  document.querySelectorAll('.dd-btn').forEach(function(b)  { b.classList.remove('open'); });
-}
-
-function toggleMenu(btnId, menuId) {
-  var menu = document.getElementById(menuId);
-  var btn  = document.getElementById(btnId);
-  var wasOpen = menu.classList.contains('open');
-  closeAll();
-  if (!wasOpen) {
-    menu.classList.add('open');
-    btn.classList.add('open');
+  // ── Dropdown ──────────────────────────────────────────
+  function closeAll() {
+    document.querySelectorAll('.dd-menu').forEach(function(m){m.classList.remove('open');});
+    document.querySelectorAll('.dd-btn').forEach(function(b){b.classList.remove('open');});
   }
-}
 
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.dd-wrap')) closeAll();
-});
+  function makeDropdown(btnId, menuId, onPick) {
+    var btn  = document.getElementById(btnId);
+    var menu = document.getElementById(menuId);
 
-// ── Build dropdowns ───────────────────────────────────────
-function buildMenu(menuId, onPick) {
-  var menu = document.getElementById(menuId);
-  buildings.forEach(function(b) {
-    var item = document.createElement('div');
-    item.className = 'dd-item';
-    item.textContent = b.n;
-    item.addEventListener('click', function() {
-      onPick(b);
+    // toggle on click
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var wasOpen = menu.classList.contains('open');
       closeAll();
+      if (!wasOpen) {
+        menu.classList.add('open');
+        btn.classList.add('open');
+      }
     });
-    menu.appendChild(item);
+
+    // build items
+    buildings.forEach(function(b) {
+      var item = document.createElement('div');
+      item.className = 'dd-item';
+      item.textContent = b.n;
+      // use touchend for mobile responsiveness
+      function pick(e) {
+        e.stopPropagation();
+        onPick(b);
+        closeAll();
+      }
+      item.addEventListener('click', pick);
+      menu.appendChild(item);
+    });
+  }
+
+  // close when tapping outside
+  document.addEventListener('click', function() { closeAll(); });
+
+  // build all three dropdowns
+  makeDropdown('btn-dd-search', 'menu-search', function(b) {
+    searchSel = b;
+    document.getElementById('lbl-search').textContent = b.n;
   });
-}
 
-// Search dropdown
-buildMenu('dd-search-menu', function(b) {
-  searchSel = b;
-  document.getElementById('dd-search-label').textContent = b.n;
-});
+  makeDropdown('btn-dd-from', 'menu-from', function(b) {
+    fromSel = b;
+    document.getElementById('lbl-from').textContent = '🟢 ' + b.n;
+  });
 
-// From dropdown
-buildMenu('dd-from-menu', function(b) {
-  fromSel = b;
-  document.getElementById('dd-from-label').textContent = '🟢 ' + b.n;
-});
+  makeDropdown('btn-dd-to', 'menu-to', function(b) {
+    toSel = b;
+    document.getElementById('lbl-to').textContent = '🟠 ' + b.n;
+  });
 
-// To dropdown
-buildMenu('dd-to-menu', function(b) {
-  toSel = b;
-  document.getElementById('dd-to-label').textContent = '🟠 ' + b.n;
-});
+  // ── Helpers ───────────────────────────────────────────
+  function getRect() {
+    var wrap=document.getElementById('map-wrap'), img=document.getElementById('map-img');
+    var wW=wrap.clientWidth, wH=wrap.clientHeight;
+    var nW=img.naturalWidth||1280, nH=img.naturalHeight||911;
+    var sc=Math.min(wW/nW,wH/nH);
+    return {oX:(wW-nW*sc)/2, oY:(wH-nH*sc)/2, rW:nW*sc, rH:nH*sc};
+  }
 
-// ── Button wiring ─────────────────────────────────────────
-document.getElementById('dd-search-btn').addEventListener('click', function() {
-  toggleMenu('dd-search-btn', 'dd-search-menu');
-});
-document.getElementById('dd-from-btn').addEventListener('click', function() {
-  toggleMenu('dd-from-btn', 'dd-from-menu');
-});
-document.getElementById('dd-to-btn').addEventListener('click', function() {
-  toggleMenu('dd-to-btn', 'dd-to-menu');
-});
+  function setStatus(msg,cls) {
+    var el=document.getElementById('status');
+    el.textContent=msg; el.className=cls||'';
+  }
 
-document.getElementById('btn-search').addEventListener('click', function() {
-  if (!searchSel) { setStatus('اختر مبنى من القائمة.', 'notfound'); return; }
-  render();
-  setStatus('✓ تم تحديد المبنى رقم ' + searchSel.n + '.', 'found');
-});
+  // ── Buttons ───────────────────────────────────────────
+  document.getElementById('btn-do-search').addEventListener('click', function() {
+    if (!searchSel) { setStatus('اختر مبنى من القائمة.','notfound'); return; }
+    render();
+    setStatus('✓ تم تحديد المبنى رقم '+searchSel.n+'.','found');
+  });
 
-document.getElementById('btn-clear-search').addEventListener('click', function() {
-  searchSel = null;
-  document.getElementById('dd-search-label').textContent = 'اختر رقم المبنى';
-  setStatus('');
-  render();
-});
+  document.getElementById('btn-do-clear').addEventListener('click', function() {
+    searchSel=null;
+    document.getElementById('lbl-search').textContent='اختر رقم المبنى';
+    setStatus(''); render();
+  });
 
-document.getElementById('btn-draw').addEventListener('click', function() {
-  var rs = document.getElementById('route-status');
-  if (!fromSel || !toSel) { rs.textContent = '⚠️ اختر المبنيين.'; return; }
-  if (fromSel.n === toSel.n) { rs.textContent = '⚠️ اختر مبنيين مختلفين.'; return; }
-  routeFrom = fromSel; routeTo = toSel;
-  rs.textContent = '';
-  document.getElementById('ri-from').textContent = 'مبنى ' + routeFrom.n;
-  document.getElementById('ri-to').textContent   = 'مبنى ' + routeTo.n;
-  document.getElementById('route-info').style.display = 'flex';
-  document.getElementById('btn-clear-route').style.display = 'block';
-  render();
-});
+  document.getElementById('btn-draw').addEventListener('click', function() {
+    var rs=document.getElementById('route-status');
+    if (!fromSel||!toSel) {rs.textContent='⚠️ اختر المبنيين.'; return;}
+    if (fromSel.n===toSel.n) {rs.textContent='⚠️ اختر مبنيين مختلفين.'; return;}
+    routeFrom=fromSel; routeTo=toSel;
+    rs.textContent='';
+    document.getElementById('ri-from').textContent='مبنى '+routeFrom.n;
+    document.getElementById('ri-to').textContent='مبنى '+routeTo.n;
+    document.getElementById('route-info').style.display='flex';
+    document.getElementById('btn-clear-route').style.display='block';
+    render();
+  });
 
-document.getElementById('btn-clear-route').addEventListener('click', function() {
-  routeFrom = null; routeTo = null;
-  fromSel   = null; toSel   = null;
-  document.getElementById('dd-from-label').textContent = '🟢 من';
-  document.getElementById('dd-to-label').textContent   = '🟠 إلى';
-  document.getElementById('route-status').textContent  = '';
-  document.getElementById('route-info').style.display  = 'none';
-  document.getElementById('btn-clear-route').style.display = 'none';
-  render();
-});
+  document.getElementById('btn-clear-route').addEventListener('click', function() {
+    routeFrom=null; routeTo=null; fromSel=null; toSel=null;
+    document.getElementById('lbl-from').textContent='🟢 من';
+    document.getElementById('lbl-to').textContent='🟠 إلى';
+    document.getElementById('route-status').textContent='';
+    document.getElementById('route-info').style.display='none';
+    document.getElementById('btn-clear-route').style.display='none';
+    render();
+  });
 
-// ── Render ────────────────────────────────────────────────
-function render() {
-  renderPins();
-  renderCanvas();
-}
+  // ── Render ────────────────────────────────────────────
+  function render() {
+    // pins
+    var layer=document.getElementById('pin-layer');
+    layer.innerHTML='';
+    var r=getRect();
+    function pin(b,cls) {
+      var d=document.createElement('div');
+      d.className='pin pulse';
+      d.style.left=(r.oX+b.x/100*r.rW)+'px';
+      d.style.top=(r.oY+b.y/100*r.rH)+'px';
+      d.innerHTML='<div class="pin-dot '+cls+'">'+b.n+'</div><div class="pin-tail '+cls+'"></div>';
+      layer.appendChild(d);
+    }
+    if (searchSel) pin(searchSel,'red');
+    if (routeFrom) pin(routeFrom,'grn');
+    if (routeTo)   pin(routeTo,'org');
 
-function renderPins() {
-  var layer = document.getElementById('pin-layer');
-  layer.innerHTML = '';
-  if (searchSel) addPin(layer, searchSel, 'red');
-  if (routeFrom) addPin(layer, routeFrom, 'green');
-  if (routeTo)   addPin(layer, routeTo,   'orange');
-}
+    // canvas
+    var cv=document.getElementById('canvas-layer');
+    var wrap=document.getElementById('map-wrap');
+    cv.width=wrap.clientWidth; cv.height=wrap.clientHeight;
+    var ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,cv.width,cv.height);
+    if (routeFrom&&routeTo) {
+      var A={x:r.oX+routeFrom.x/100*r.rW, y:r.oY+routeFrom.y/100*r.rH};
+      var B={x:r.oX+routeTo.x/100*r.rW,   y:r.oY+routeTo.y/100*r.rH};
+      ctx.save();
+      ctx.lineWidth=3; ctx.strokeStyle='rgba(220,50,50,0.7)';
+      ctx.shadowColor='rgba(220,50,50,0.4)'; ctx.shadowBlur=6;
+      ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+      ctx.restore();
+    }
+  }
 
-function addPin(layer, b, color) {
-  var r = getRect();
-  var pin = document.createElement('div');
-  pin.className = 'pin pulse';
-  pin.style.left = (r.oX + b.x/100*r.rW) + 'px';
-  pin.style.top  = (r.oY + b.y/100*r.rH) + 'px';
-  pin.innerHTML  = '<div class="pin-dot ' + color + '">' + b.n + '</div><div class="pin-tail ' + color + '"></div>';
-  layer.appendChild(pin);
-}
+  window.addEventListener('resize', render);
+  var img=document.getElementById('map-img');
+  img.onload=render;
+  if (img.complete) render();
 
-function renderCanvas() {
-  var canvas = document.getElementById('canvas-layer');
-  var wrap   = document.getElementById('map-wrap');
-  canvas.width  = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
-  var ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (!routeFrom || !routeTo) return;
-  var A = toPixel(routeFrom), B = toPixel(routeTo);
-  ctx.save();
-  ctx.lineWidth   = 3;
-  ctx.strokeStyle = 'rgba(220,50,50,0.65)';
-  ctx.shadowColor = 'rgba(220,50,50,0.3)';
-  ctx.shadowBlur  = 6;
-  ctx.lineCap     = 'round';
-  ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
-  ctx.restore();
-}
-
-window.addEventListener('resize', render);
-var mapImg = document.getElementById('map-img');
-mapImg.onload = render;
-if (mapImg.complete) render();
+})();
 </script>
 </body>
 </html>
