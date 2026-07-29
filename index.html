@@ -313,15 +313,39 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
   }
 
   function clampT(){
-    var wW=mapEl.clientWidth,wH=mapEl.clientHeight;
-    var nW=mapImg.naturalWidth||1280,nH=mapImg.naturalHeight||911;
-    var sc=Math.min(wW/nW,wH/nH);
-    var iW=nW*sc*zoomState.scale,iH=nH*sc*zoomState.scale;
-    var ox=(wW-nW*sc)/2,oy=(wH-nH*sc)/2;
-    var maxX=Math.max(0,(iW-wW)/2+ox*(zoomState.scale-1));
-    var maxY=Math.max(0,(iH-wH)/2+oy*(zoomState.scale-1));
-    zoomState.tx=Math.min(maxX,Math.max(-maxX,zoomState.tx));
-    zoomState.ty=Math.min(maxY,Math.max(-maxY,zoomState.ty));
+    var wW=mapEl.clientWidth, wH=mapEl.clientHeight;
+    var nW=mapImg.naturalWidth||1280, nH=mapImg.naturalHeight||911;
+    var sc=Math.min(wW/nW, wH/nH);
+    // natural centered offset before zoom
+    var ox=(wW-nW*sc)/2, oy=(wH-nH*sc)/2;
+    // scaled image size
+    var iW=nW*sc*zoomState.scale, iH=nH*sc*zoomState.scale;
+    // The image top-left corner starts at (ox, oy) then gets shifted by (tx,ty)
+    // after transform-origin:0 0, scale expands from top-left of img element
+    // so actual top-left of image on screen = ox*scale + tx  (since img is 100%x100%)
+    // we want: left edge <= 0 and right edge >= wW
+    //   left:  ox*scale + tx <= 0  => tx <= -ox*scale ... but also right edge >= wW
+    //   right: ox*scale + tx + iW >= wW => tx >= wW - iW - ox*scale
+    var minTx = wW - iW - ox*(zoomState.scale-1)*0 ;
+    // Simpler direct formula:
+    // image occupies [tx + ox*s, tx + ox*s + iW] horizontally on screen
+    // clamp so image covers screen: left<=0, right>=wW
+    var imgLeft  = function(tx){ return tx + ox*zoomState.scale; };
+    var imgRight = function(tx){ return tx + ox*zoomState.scale + iW; };
+    // max tx: left edge of image at 0 (can't go further right)
+    var maxTx = -ox*zoomState.scale;
+    // min tx: right edge of image at wW
+    var minTx2 = wW - ox*zoomState.scale - iW;
+    if(iW <= wW){ minTx2=maxTx=0; }
+
+    var imgTop    = function(ty){ return ty + oy*zoomState.scale; };
+    var imgBottom = function(ty){ return ty + oy*zoomState.scale + iH; };
+    var maxTy = -oy*zoomState.scale;
+    var minTy = wH - oy*zoomState.scale - iH;
+    if(iH <= wH){ minTy=maxTy=0; }
+
+    zoomState.tx = Math.min(maxTx, Math.max(minTx2, zoomState.tx));
+    zoomState.ty = Math.min(maxTy, Math.max(minTy,  zoomState.ty));
   }
 
   var _lastDist=0,_lastTx=0,_lastTy=0,_panStartX=0,_panStartY=0,_lastTap=0;
