@@ -2,32 +2,43 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>سكن مصر</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:#1a2744;color:#fff}
 #app{display:flex;flex-direction:column;height:100dvh;width:100%}
-#map-wrap{flex:0 0 52%;position:relative;overflow:hidden;background:#2c3a55}
-#map-wrap img{width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+#map-wrap{flex:0 0 52%;position:relative;overflow:hidden;background:#2c3a55;touch-action:none}
+#map-wrap img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;transform-origin:0 0;will-change:transform}
 #canvas-layer{position:absolute;inset:0;pointer-events:none}
 #pin-layer{position:absolute;inset:0;pointer-events:none}
 #controls{flex:1 1 0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#1a2744;padding:10px 12px 20px;display:flex;flex-direction:column;gap:8px}
 .card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
-.row{display:flex;gap:6px;align-items:stretch}
-.btn{padding:10px 8px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.row{display:flex;gap:6px;align-items:center}
+.btn{padding:10px 10px;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
 .btn-primary{background:#c8ab5a;color:#1a2744}
 .btn-secondary{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15)}
 .btn-danger{background:rgba(220,60,60,0.15);color:#f08080;border:1px solid rgba(220,60,60,0.25)}
-.dd-wrap{flex:1;position:relative;z-index:10}
-.dd-btn{width:100%;height:100%;min-height:42px;padding:8px 12px;font-size:14px;font-weight:600;background:rgba(255,255,255,0.08);color:#fff;border:1.5px solid rgba(255,255,255,0.2);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:4px;text-align:right}
-.dd-btn .chevron{font-size:10px;color:rgba(255,255,255,0.5);flex-shrink:0;transition:transform .2s}
-.dd-btn.open .chevron{transform:rotate(180deg)}
-.dd-menu{position:absolute;top:calc(100% + 4px);right:0;left:0;background:#1a2f5e;border:1.5px solid #c8ab5a;border-radius:10px;max-height:180px;overflow-y:auto;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.6);display:none;-webkit-overflow-scrolling:touch}
-.dd-menu.open{display:block}
-.dd-item{padding:11px 14px;font-size:15px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.07);text-align:right;-webkit-tap-highlight-color:rgba(200,171,90,0.3)}
-.dd-item:last-child{border-bottom:none}
-.dd-item:active,.dd-item:hover{background:rgba(200,171,90,0.2);color:#c8ab5a}
+
+/* Native select styled */
+.sel-wrap{flex:1;position:relative}
+.sel-wrap select{
+  width:100%;height:42px;padding:0 32px 0 10px;
+  font-size:14px;font-weight:600;
+  background:#1a2f5e;color:#fff;
+  border:1.5px solid rgba(255,255,255,0.2);
+  border-radius:10px;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  outline:none;direction:rtl;
+}
+.sel-wrap select:focus{border-color:#c8ab5a}
+.sel-wrap::after{
+  content:"▼";position:absolute;
+  left:10px;top:50%;transform:translateY(-50%);
+  font-size:10px;color:rgba(255,255,255,0.5);
+  pointer-events:none;
+}
+
 #status{font-size:12px;color:rgba(255,255,255,0.5);min-height:16px}
 #status.found{color:#7ed9a0}
 #status.notfound{color:#f08080}
@@ -35,6 +46,7 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
 .route-info{background:rgba(240,192,64,0.1);border:1px solid rgba(240,192,64,0.3);border-radius:8px;padding:8px 12px;font-size:13px;align-items:center;gap:6px;display:none}
 .route-info .from{color:#7ed9a0;font-weight:700}
 .route-info .to{color:#f0a070;font-weight:700}
+
 .pin{position:absolute;transform:translate(-50%,-100%);animation:bnc .35s ease}
 @keyframes bnc{0%{transform:translate(-50%,-130%) scale(.3);opacity:0}65%{transform:translate(-50%,-90%) scale(1.15);opacity:1}100%{transform:translate(-50%,-100%) scale(1);opacity:1}}
 .pulse{animation:bnc .35s ease,pls 2s ease-in-out .35s infinite}
@@ -56,14 +68,13 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
   </div>
   <div id="controls">
 
+    <!-- Search -->
     <div class="card">
       <div class="row">
-        <div class="dd-wrap" id="wrap-search">
-          <button class="dd-btn" id="btn-dd-search">
-            <span id="lbl-search">اختر رقم المبنى</span>
-            <span class="chevron">▼</span>
-          </button>
-          <div class="dd-menu" id="menu-search"></div>
+        <div class="sel-wrap">
+          <select id="sel-search">
+            <option value="">اختر رقم المبنى</option>
+          </select>
         </div>
         <button class="btn btn-primary" id="btn-do-search">بحث</button>
         <button class="btn btn-secondary" id="btn-do-clear">مسح</button>
@@ -71,21 +82,18 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
       <div id="status"></div>
     </div>
 
+    <!-- Route -->
     <div class="card">
       <div class="row">
-        <div class="dd-wrap" id="wrap-from">
-          <button class="dd-btn" id="btn-dd-from">
-            <span id="lbl-from">🟢 من</span>
-            <span class="chevron">▼</span>
-          </button>
-          <div class="dd-menu" id="menu-from"></div>
+        <div class="sel-wrap">
+          <select id="sel-from">
+            <option value="">🟢 من مبنى</option>
+          </select>
         </div>
-        <div class="dd-wrap" id="wrap-to">
-          <button class="dd-btn" id="btn-dd-to">
-            <span id="lbl-to">🟠 إلى</span>
-            <span class="chevron">▼</span>
-          </button>
-          <div class="dd-menu" id="menu-to"></div>
+        <div class="sel-wrap">
+          <select id="sel-to">
+            <option value="">🟠 إلى مبنى</option>
+          </select>
         </div>
         <button class="btn btn-primary" id="btn-draw">رسم</button>
         <button class="btn btn-danger" id="btn-clear-route" style="display:none">مسح</button>
@@ -186,118 +194,81 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
     {n:227,x:89.3,y:74.09},{n:228,x:87.97,y:77.61}
   ];
 
-  // State
+  // populate selects
+  var selSearch = document.getElementById('sel-search');
+  var selFrom   = document.getElementById('sel-from');
+  var selTo     = document.getElementById('sel-to');
+
+  buildings.forEach(function(b) {
+    var o1 = new Option(b.n, b.n); selSearch.appendChild(o1);
+    var o2 = new Option(b.n, b.n); selFrom.appendChild(o2);
+    var o3 = new Option(b.n, b.n); selTo.appendChild(o3);
+  });
+
+  // state
   var searchSel=null, fromSel=null, toSel=null, routeFrom=null, routeTo=null;
 
-  // ── Dropdown ──────────────────────────────────────────
-  function closeAll() {
-    document.querySelectorAll('.dd-menu').forEach(function(m){m.classList.remove('open');});
-    document.querySelectorAll('.dd-btn').forEach(function(b){b.classList.remove('open');});
-  }
-
-  function makeDropdown(btnId, menuId, onPick) {
-    var btn  = document.getElementById(btnId);
-    var menu = document.getElementById(menuId);
-
-    // toggle on click
-    btn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      var wasOpen = menu.classList.contains('open');
-      closeAll();
-      if (!wasOpen) {
-        menu.classList.add('open');
-        btn.classList.add('open');
-      }
-    });
-
-    // build items
-    buildings.forEach(function(b) {
-      var item = document.createElement('div');
-      item.className = 'dd-item';
-      item.textContent = b.n;
-      // use touchend for mobile responsiveness
-      function pick(e) {
-        e.stopPropagation();
-        onPick(b);
-        closeAll();
-      }
-      item.addEventListener('click', pick);
-      menu.appendChild(item);
-    });
-  }
-
-  // close when tapping outside
-  document.addEventListener('click', function() { closeAll(); });
-
-  // build all three dropdowns
-  makeDropdown('btn-dd-search', 'menu-search', function(b) {
-    searchSel = b;
-    document.getElementById('lbl-search').textContent = b.n;
-  });
-
-  makeDropdown('btn-dd-from', 'menu-from', function(b) {
-    fromSel = b;
-    document.getElementById('lbl-from').textContent = '🟢 ' + b.n;
-  });
-
-  makeDropdown('btn-dd-to', 'menu-to', function(b) {
-    toSel = b;
-    document.getElementById('lbl-to').textContent = '🟠 ' + b.n;
-  });
-
-  // ── Helpers ───────────────────────────────────────────
-  function getRect() {
-    var wrap=document.getElementById('map-wrap'), img=document.getElementById('map-img');
-    var wW=wrap.clientWidth, wH=wrap.clientHeight;
-    var nW=img.naturalWidth||1280, nH=img.naturalHeight||911;
-    var sc=Math.min(wW/nW,wH/nH);
-    return {oX:(wW-nW*sc)/2, oY:(wH-nH*sc)/2, rW:nW*sc, rH:nH*sc};
-  }
+  function findB(n) { return buildings.find(function(b){return b.n===+n;}); }
 
   function setStatus(msg,cls) {
     var el=document.getElementById('status');
     el.textContent=msg; el.className=cls||'';
   }
 
-  // ── Buttons ───────────────────────────────────────────
+  // search buttons
   document.getElementById('btn-do-search').addEventListener('click', function() {
-    if (!searchSel) { setStatus('اختر مبنى من القائمة.','notfound'); return; }
+    var v = selSearch.value;
+    if (!v) { setStatus('اختر مبنى من القائمة.','notfound'); return; }
+    searchSel = findB(v);
     render();
-    setStatus('✓ تم تحديد المبنى رقم '+searchSel.n+'.','found');
+    setStatus('✓ تم تحديد المبنى رقم '+v+'.','found');
   });
 
   document.getElementById('btn-do-clear').addEventListener('click', function() {
-    searchSel=null;
-    document.getElementById('lbl-search').textContent='اختر رقم المبنى';
+    searchSel=null; selSearch.value='';
     setStatus(''); render();
   });
 
+  // route buttons
   document.getElementById('btn-draw').addEventListener('click', function() {
     var rs=document.getElementById('route-status');
-    if (!fromSel||!toSel) {rs.textContent='⚠️ اختر المبنيين.'; return;}
-    if (fromSel.n===toSel.n) {rs.textContent='⚠️ اختر مبنيين مختلفين.'; return;}
-    routeFrom=fromSel; routeTo=toSel;
+    var fv=selFrom.value, tv=selTo.value;
+    if (!fv||!tv) {rs.textContent='⚠️ اختر المبنيين.'; return;}
+    if (fv===tv)  {rs.textContent='⚠️ اختر مبنيين مختلفين.'; return;}
+    routeFrom=findB(fv); routeTo=findB(tv);
     rs.textContent='';
-    document.getElementById('ri-from').textContent='مبنى '+routeFrom.n;
-    document.getElementById('ri-to').textContent='مبنى '+routeTo.n;
+    document.getElementById('ri-from').textContent='مبنى '+fv;
+    document.getElementById('ri-to').textContent='مبنى '+tv;
     document.getElementById('route-info').style.display='flex';
     document.getElementById('btn-clear-route').style.display='block';
     render();
   });
 
   document.getElementById('btn-clear-route').addEventListener('click', function() {
-    routeFrom=null; routeTo=null; fromSel=null; toSel=null;
-    document.getElementById('lbl-from').textContent='🟢 من';
-    document.getElementById('lbl-to').textContent='🟠 إلى';
+    routeFrom=null; routeTo=null;
+    selFrom.value=''; selTo.value='';
     document.getElementById('route-status').textContent='';
     document.getElementById('route-info').style.display='none';
     document.getElementById('btn-clear-route').style.display='none';
     render();
   });
 
-  // ── Render ────────────────────────────────────────────
+  // render
+  function getRect() {
+    var wrap=document.getElementById('map-wrap'),img=document.getElementById('map-img');
+    var wW=wrap.clientWidth,wH=wrap.clientHeight;
+    var nW=img.naturalWidth||1280,nH=img.naturalHeight||911;
+    var sc=Math.min(wW/nW,wH/nH);
+    var z=typeof zoomState!=='undefined'?zoomState:{scale:1,tx:0,ty:0};
+    return {
+      oX:(wW-nW*sc)/2*z.scale+z.tx,
+      oY:(wH-nH*sc)/2*z.scale+z.ty,
+      rW:nW*sc*z.scale,
+      rH:nH*sc*z.scale
+    };
+  }
+
   function render() {
-    // pins
     var layer=document.getElementById('pin-layer');
     layer.innerHTML='';
     var r=getRect();
@@ -313,29 +284,96 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
     if (routeFrom) pin(routeFrom,'grn');
     if (routeTo)   pin(routeTo,'org');
 
-    // canvas
     var cv=document.getElementById('canvas-layer');
     var wrap=document.getElementById('map-wrap');
     cv.width=wrap.clientWidth; cv.height=wrap.clientHeight;
     var ctx=cv.getContext('2d');
     ctx.clearRect(0,0,cv.width,cv.height);
     if (routeFrom&&routeTo) {
-      var A={x:r.oX+routeFrom.x/100*r.rW, y:r.oY+routeFrom.y/100*r.rH};
-      var B={x:r.oX+routeTo.x/100*r.rW,   y:r.oY+routeTo.y/100*r.rH};
+      var A={x:r.oX+routeFrom.x/100*r.rW,y:r.oY+routeFrom.y/100*r.rH};
+      var B={x:r.oX+routeTo.x/100*r.rW,y:r.oY+routeTo.y/100*r.rH};
       ctx.save();
-      ctx.lineWidth=3; ctx.strokeStyle='rgba(220,50,50,0.7)';
-      ctx.shadowColor='rgba(220,50,50,0.4)'; ctx.shadowBlur=6;
-      ctx.lineCap='round';
-      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+      ctx.lineWidth=3;ctx.strokeStyle='rgba(220,50,50,0.7)';
+      ctx.shadowColor='rgba(220,50,50,0.4)';ctx.shadowBlur=6;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
       ctx.restore();
     }
   }
 
-  window.addEventListener('resize', render);
+  // ── Pinch-zoom + pan ─────────────────────────────────
+  var zoomState={scale:1,tx:0,ty:0};
+  var mapEl=document.getElementById('map-wrap');
+  var mapImg=document.getElementById('map-img');
+  var MIN_S=1,MAX_S=5;
+
+  function applyTransform(){
+    mapImg.style.transform='translate('+zoomState.tx+'px,'+zoomState.ty+'px) scale('+zoomState.scale+')';
+    render();
+  }
+
+  function clampT(){
+    var wW=mapEl.clientWidth,wH=mapEl.clientHeight;
+    var nW=mapImg.naturalWidth||1280,nH=mapImg.naturalHeight||911;
+    var sc=Math.min(wW/nW,wH/nH);
+    var iW=nW*sc*zoomState.scale,iH=nH*sc*zoomState.scale;
+    var ox=(wW-nW*sc)/2*zoomState.scale,oy=(wH-nH*sc)/2*zoomState.scale;
+    var mxX=Math.max(0,(iW-wW)/2+ox),mxY=Math.max(0,(iH-wH)/2+oy);
+    zoomState.tx=Math.min(mxX,Math.max(-mxX,zoomState.tx));
+    zoomState.ty=Math.min(mxY,Math.max(-mxY,zoomState.ty));
+  }
+
+  var _touches={},_lastDist=0,_lastTx=0,_lastTy=0,_startX=0,_startY=0;
+
+  mapEl.addEventListener('touchstart',function(e){
+    e.preventDefault();
+    if(e.touches.length===2){
+      var t1=e.touches[0],t2=e.touches[1];
+      _lastDist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+      _lastTx=zoomState.tx; _lastTy=zoomState.ty;
+    } else if(e.touches.length===1){
+      _startX=e.touches[0].clientX; _startY=e.touches[0].clientY;
+      _lastTx=zoomState.tx; _lastTy=zoomState.ty;
+    }
+  },{passive:false});
+
+  mapEl.addEventListener('touchmove',function(e){
+    e.preventDefault();
+    if(e.touches.length===2){
+      var t1=e.touches[0],t2=e.touches[1];
+      var dist=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+      // mid point calculated inline below
+      var newSc=Math.min(MAX_S,Math.max(MIN_S,zoomState.scale*(dist/_lastDist)));
+      var rect=mapEl.getBoundingClientRect();
+      var mx=(t1.clientX+t2.clientX)/2-rect.left;
+      var my=(t1.clientY+t2.clientY)/2-rect.top;
+      zoomState.tx=mx-(mx-_lastTx)*(newSc/zoomState.scale);
+      zoomState.ty=my-(my-_lastTy)*(newSc/zoomState.scale);
+      zoomState.scale=newSc;
+      _lastDist=dist; _lastTx=zoomState.tx; _lastTy=zoomState.ty;
+      clampT(); applyTransform();
+    } else if(e.touches.length===1&&zoomState.scale>1){
+      zoomState.tx=_lastTx+(e.touches[0].clientX-_startX);
+      zoomState.ty=_lastTy+(e.touches[0].clientY-_startY);
+      clampT(); applyTransform();
+    }
+  },{passive:false});
+
+  // double-tap to reset
+  var _lastTap=0;
+  mapEl.addEventListener('touchend',function(e){
+    var now=Date.now();
+    if(now-_lastTap<280){zoomState={scale:1,tx:0,ty:0};applyTransform();}
+    _lastTap=now;
+  });
+
+  window.addEventListener('resize',function(){
+    zoomState={scale:1,tx:0,ty:0};
+    mapImg.style.transform='';
+    render();
+  });
   var img=document.getElementById('map-img');
   img.onload=render;
-  if (img.complete) render();
-
+  if(img.complete)render();
 })();
 </script>
 </body>
