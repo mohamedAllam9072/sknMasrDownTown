@@ -268,7 +268,7 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
     };
   }
 
-  function render() {
+  function renderPinsOnly() {
     var layer=document.getElementById('pin-layer');
     layer.innerHTML='';
     var r=getRect();
@@ -283,7 +283,10 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
     if (searchSel) pin(searchSel,'red');
     if (routeFrom) pin(routeFrom,'grn');
     if (routeTo)   pin(routeTo,'org');
+  }
 
+  function renderCanvasOnly() {
+    var r=getRect();
     var cv=document.getElementById('canvas-layer');
     var wrap=document.getElementById('map-wrap');
     cv.width=wrap.clientWidth; cv.height=wrap.clientHeight;
@@ -298,6 +301,11 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:"Segoe UI",Tahoma,A
       ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
       ctx.restore();
     }
+  }
+
+  function render() {
+    renderPinsOnly();
+    renderCanvasOnly();
   }
 
   // ── Pinch-zoom + pan ─────────────────────────────────
